@@ -479,6 +479,11 @@ section {
     margin: 0 auto;
 }
 
+.featured-cta {
+    text-align: center;
+    margin-top: 4rem;
+}
+
 .gallery-item {
     background-color: var(--white);
     padding: 24px 24px 0;
