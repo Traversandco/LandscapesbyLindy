@@ -80,7 +80,7 @@ if (contactForm) {
         submitBtn.textContent = 'Sending…';
 
         try {
-            const resp = await fetch('https://formsubmit.co/ajax/Lindy@landscapesbylindy.co.uk', {
+            const resp = await fetch('https://formsubmit.co/ajax/lindyhams@gmail.com', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({
@@ -103,8 +103,8 @@ if (contactForm) {
         } catch (err) {
             // Fallback: open the visitor's email app pre-addressed
             const body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + message;
-            window.location.href = 'mailto:Lindy@landscapesbylindy.co.uk?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-            formMessage.textContent = 'The direct send didn\'t go through, so your email app has been opened with the message ready — or email Lindy@landscapesbylindy.co.uk directly.';
+            window.location.href = 'mailto:lindyhams@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+            formMessage.textContent = 'The direct send didn\'t go through, so your email app has been opened with the message ready — or email lindyhams@gmail.com directly.';
             formMessage.style.display = 'block';
             formMessage.setAttribute('role', 'status');
             submitBtn.disabled = false;

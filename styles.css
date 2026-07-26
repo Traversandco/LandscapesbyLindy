@@ -981,6 +981,17 @@ section {
     color: rgba(255,255,255,0.5);
 }
 
+.footer-bottom a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom a:hover {
+    color: rgba(255,255,255,0.85);
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 900px) {
