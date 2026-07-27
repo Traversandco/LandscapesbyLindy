@@ -287,6 +287,8 @@ export default {
       url.pathname === "/_worker.js" ||
       url.pathname.startsWith("/worker/") ||
       url.pathname.startsWith("/functions/") ||
+      url.pathname.startsWith("/.git") ||
+      url.pathname.startsWith("/artwork/") ||
       url.pathname === "/wrangler.jsonc" ||
       url.pathname === "/.assetsignore"
     ) {

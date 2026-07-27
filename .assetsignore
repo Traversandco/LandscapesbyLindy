@@ -2,6 +2,13 @@
 # The asset directory is the repository root, so anything not listed here
 # is downloadable from the live site.
 
+# The git repository itself. Wrangler uploads the asset directory as-is,
+# so without this the whole history is published and downloadable — and
+# once the pack file passes 25 MiB the build fails outright on it.
+.git/
+.gitignore
+.gitattributes
+
 # Server-side code
 worker/
 
@@ -15,7 +22,6 @@ artwork/
 wrangler.jsonc
 wrangler.toml
 .assetsignore
-.gitattributes
 .claude/
 
 # Local-only helpers
