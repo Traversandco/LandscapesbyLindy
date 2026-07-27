@@ -22,7 +22,7 @@ window.WORKS = {
   "king-protea":            { t: "King Protea",                 p: 270000, m: "Oil on canvas", d: "25 × 20 cm" },
   "little-donkey":          { t: "Little Donkey",               p: 200000, m: "Oil on canvas", d: "14.5 × 18.5 cm" },
   "provence-lavender-farm": { t: "Provence Lavender Farm",      p: 300000, m: "Oil on board",  d: "61 × 46 cm" },
-  "red-roofs-still-water":  { t: "Red Roofs, Still Water",      p: 225000, m: "Oil on board",  d: "43.5 × 35 cm" },
+  "red-roofs-still-water":  { t: "Dullstroom",      p: 225000, m: "Oil on board",  d: "43.5 × 35 cm" },
   "clifftop-cottage":       { t: "Clifftop Cottage",            p: 205000, m: "Oil on board",  d: "40 × 30 cm" },
   "cosmos-and-windpump":    { t: "Cosmos and Windpump",         p: 205000, m: "Oil on board",  d: "40 × 30 cm" },
   "the-sea-arch":           { t: "The Sea Arch",                p: 205000, m: "Oil on board",  d: "40 × 30 cm" },

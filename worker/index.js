@@ -34,7 +34,7 @@ const PRICES = {
   "king-protea":            { price: "price_1TxignBrZ8ulnngRXvnXdqkS", product: "prod_UxdyQeURSKOlq4", name: "King Protea" },
   "little-donkey":          { price: "price_1TxigyBrZ8ulnngRm34ucGOL", product: "prod_UxdyABJGc1JWlI", name: "Little Donkey" },
   "provence-lavender-farm": { price: "price_1TxiciBrZ8ulnngRbE3a1RYy", product: "prod_UxdufHZiBl2tZ4", name: "Provence Lavender Farm" },
-  "red-roofs-still-water":  { price: "price_1TxihBBrZ8ulnngRIF7yPMM8", product: "prod_UxdzAeQpAbqBH2", name: "Red Roofs, Still Water" },
+  "red-roofs-still-water":  { price: "price_1TxihBBrZ8ulnngRIF7yPMM8", product: "prod_UxdzAeQpAbqBH2", name: "Dullstroom" },
   "clifftop-cottage":       { price: "price_1TxihLBrZ8ulnngR7twjrcFy", product: "prod_UxdzuNZkqascyx", name: "Clifftop Cottage" },
   "cosmos-and-windpump":    { price: "price_1TxihWBrZ8ulnngRq8T9yCI8", product: "prod_UxdzIamb4O4Wq6", name: "Cosmos and Windpump" },
   "the-sea-arch":           { price: "price_1TxihgBrZ8ulnngRyZgNyZuT", product: "prod_Uxdzak9BPyD5Tl", name: "The Sea Arch" },
