@@ -236,12 +236,19 @@ function getHealth(env) {
     else if (key.startsWith("sk_test_") || key.startsWith("rk_test_")) mode = "test";
     else mode = "set-but-unrecognised-format";
   }
+  const all = Object.keys(env).sort();
   return json({
     worker: "ok",
+    // bump this by hand so we can tell which deployment is answering
+    version: "2026-07-27-c",
     stripeSecretKey: Boolean(key),
     stripeKeyMode: mode,
     stripeWebhookSecret: Boolean(env.STRIPE_WEBHOOK_SECRET),
-    envVarNames: Object.keys(env).filter((k) => k !== "ASSETS").sort(),
+    // every binding name, ASSETS included. If this shows only ASSETS then
+    // env is working fine and the secrets simply are not on this Worker.
+    allBindings: all,
+    bindingCount: all.length,
+    envVarNames: all.filter((k) => k !== "ASSETS"),
   });
 }
 
