@@ -12,17 +12,20 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found | Landscapes by Lindy</title>
+    <title>Thank You | Landscapes by Lindy</title>
+    <meta name="description" content="Thank you for your purchase from Landscapes by Lindy.">
     <meta name="robots" content="noindex">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="canonical" href="https://landscapesbylindy.co.uk/order-complete.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Jost:wght@300;400;500&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
             <a href="index.html" class="logo">
@@ -40,20 +43,38 @@
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="basket.html" class="nav-cta" data-basket-link>Basket <span class="basket-count" data-basket-count hidden>0</span></a></li>
+                <li><a href="contact.html" class="nav-cta">Enquire</a></li>
             </ul>
         </div>
     </nav>
 
-    <section class="gallery-page">
+    <section class="about-page">
         <div class="page-header">
-            <span class="eyebrow">Lost among the landscapes</span>
-            <h1>Page Not Found</h1>
-            <p>The page you were looking for isn&rsquo;t here &mdash; perhaps the work has found a new home. Browse the collection to see every available painting.</p>
-            <p style="margin-top: 2rem;"><a href="gallery.html" class="btn btn-primary">View the Gallery</a></p>
+            <span class="eyebrow">Thank You</span>
+            <h1>Your Painting Is On Its Way</h1>
+        </div>
+        <div class="container">
+            <div class="about-page-content">
+                <div class="about-text-full">
+                    <p>Thank you — your order has been received and your payment was successful. A confirmation and receipt are on their way to the email address you gave at checkout.</p>
+
+                    <h2>What Happens Next</h2>
+
+                    <ul>
+                        <li>Lindy will be in touch personally within two working days to confirm your order and arrange delivery.</li>
+                        <li>Your painting is packed by hand, fully insured, and sent signed-for. Delivery is free wherever you are in the world.</li>
+                        <li>UK orders typically arrive within a week; international delivery usually takes two to three weeks, depending on customs.</li>
+                    </ul>
+
+                    <p>Each work is a unique original, so the painting you have bought has now been withdrawn from the collection.</p>
+
+                    <p class="closing">If you need anything at all, just <a href="contact.html" style="color: var(--gold-text);">get in touch</a> &mdash; or reply directly to your confirmation email.</p>
+                </div>
+            </div>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -85,5 +106,9 @@
 
     <script src="cart.js"></script>
     <script src="main.js"></script>
+    <script>
+      // The sale is complete — empty the basket so a refresh cannot re-buy.
+      try { localStorage.removeItem("lbl-basket"); } catch (e) {}
+    </script>
 </body>
 </html>

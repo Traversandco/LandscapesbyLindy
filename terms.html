@@ -66,7 +66,7 @@
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="contact.html" class="nav-cta">Enquire</a></li>
+                <li><a href="basket.html" class="nav-cta" data-basket-link>Basket <span class="basket-count" data-basket-count hidden>0</span></a></li>
             </ul>
         </div>
     </nav>
@@ -105,26 +105,32 @@
 
                     <h2>Terms of Sale</h2>
 
-                    <p>Paintings on this site are sold by enquiry rather than through an online checkout. Prices are shown in pounds sterling and are for the original painting only; delivery is quoted separately.</p>
+                    <p>Paintings can be bought directly through this site, or by enquiry if you would rather speak to Lindy first. Prices are shown in pounds sterling and include delivery.</p>
 
                     <ul>
-                        <li><strong>Availability</strong> is confirmed when you enquire. Because each painting is a unique original, a work shown as available may have sold shortly beforehand.</li>
-                        <li><strong>Payment, delivery, and insurance</strong> are arranged individually and confirmed with you in writing before any payment is made. Nothing is due until those details are agreed.</li>
-                        <li><strong>Each work is unique.</strong> Colours may appear slightly different between screens and the painting itself; every piece is described and photographed in good faith.</li>
+                        <li><strong>Every work is a unique original.</strong> Once a painting sells it is withdrawn from the collection, so it can only be bought once.</li>
+                        <li><strong>Availability</strong> is confirmed at the moment of payment. If a work sells while it is sitting in your basket, checkout will tell you and the painting will be removed before any payment is taken.</li>
+                        <li><strong>Payment</strong> is taken securely by card through Stripe. Card details are handled entirely by Stripe and are never seen or stored by this site. Payment by bank transfer can be arranged by enquiry if you prefer.</li>
+                        <li><strong>Delivery is free worldwide</strong>, fully insured and sent signed-for. UK orders usually arrive within a week; international delivery typically takes two to three weeks.</li>
+                        <li><strong>Import duties and taxes</strong> outside the UK, where they apply, are the buyer's responsibility and are set by the destination country.</li>
+                        <li><strong>Colours</strong> may appear slightly different between a screen and the painting itself; every piece is described and photographed in good faith.</li>
                         <li><strong>Ownership</strong> passes once payment has cleared in full.</li>
                         <li><strong>Commissions</strong> are agreed individually, including subject, size, timescale, and price, before work begins.</li>
                     </ul>
 
-                    <p>Where a ready-made painting is bought at a distance, you have the right to cancel within 14 days of receiving it and return it for a refund, provided it is returned in its original condition. Return postage and safe packing are the buyer's responsibility. This cancellation right does not apply to commissioned or personalised works, which are made specifically for you. Your statutory rights are not affected.</p>
+                    <p>Because paintings bought here are bought at a distance, you have the right to cancel within 14 days of receiving the work and return it for a full refund, including the original delivery cost. Please let Lindy know within that period and return the painting in its original condition and packaging. Return postage and safe packing are the buyer's responsibility, and the refund is made within 14 days of the painting arriving back. This cancellation right does not apply to commissioned or personalised works, which are made specifically for you. Your statutory rights are not affected.</p>
 
                     <h2>Your Privacy</h2>
 
-                    <p>Only two things on this site involve your information, and neither is used for marketing.</p>
+                    <p>Three things on this site involve your information, and none of it is used for marketing.</p>
 
                     <ul>
                         <li><strong>The enquiry form.</strong> When you send an enquiry, the name, email address, and message you provide are passed through FormSubmit, the service that delivers the form, and arrive as an email in the studio inbox. They are used solely to reply to you and to arrange any sale or commission that follows. They are never sold, and never shared for marketing.</li>
+                        <li><strong>Buying a painting.</strong> Checkout is handled by Stripe, which collects your name, email address, phone number, and billing and delivery addresses in order to take payment and send your painting. Your card details go directly to Stripe and are never seen or stored by this site. Lindy receives your contact and delivery details so she can pack, send, and confirm your order, and keeps them as a record of the sale as tax rules require. Stripe processes this data as an independent controller under its own privacy policy.</li>
                         <li><strong>Google Analytics.</strong> This site uses Google Analytics to understand how many people visit and which paintings are viewed. It sets cookies and collects anonymous statistics such as approximate location, device, and pages viewed. It does not identify you personally, and the data is not used to contact you.</li>
                     </ul>
+
+                    <p>Your basket is kept only in your own browser's local storage on your device. It is not sent anywhere until you choose to check out, and clearing your browser data removes it.</p>
 
                     <p>Enquiry correspondence is kept only as long as needed to answer it and to keep a record of any sale. You can ask at any time what information is held about you, or ask for it to be deleted, by emailing <a href="mailto:lindyhams@gmail.com" style="color: var(--gold-text);">lindyhams@gmail.com</a>. If you would prefer not to be tracked by analytics, your browser's privacy settings or an ad-blocker will prevent it.</p>
 
@@ -170,6 +176,7 @@
         </div>
     </footer>
 
+    <script src="cart.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
