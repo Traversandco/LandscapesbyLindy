@@ -218,6 +218,26 @@ async function postWebhook(request, env) {
   return new Response("ok", { status: 200 });
 }
 
+/* ---------- GET /api/health ----------
+   Configuration check. Reports only whether variables exist and which
+   Stripe mode a key is for — never any value, prefix or length. */
+function getHealth(env) {
+  const key = env.STRIPE_SECRET_KEY;
+  let mode = "missing";
+  if (typeof key === "string" && key) {
+    if (key.startsWith("sk_live_") || key.startsWith("rk_live_")) mode = "live";
+    else if (key.startsWith("sk_test_") || key.startsWith("rk_test_")) mode = "test";
+    else mode = "set-but-unrecognised-format";
+  }
+  return json({
+    worker: "ok",
+    stripeSecretKey: Boolean(key),
+    stripeKeyMode: mode,
+    stripeWebhookSecret: Boolean(env.STRIPE_WEBHOOK_SECRET),
+    envVarNames: Object.keys(env).filter((k) => k !== "ASSETS").sort(),
+  });
+}
+
 /* ---------- router ---------- */
 export default {
   async fetch(request, env) {
@@ -225,6 +245,7 @@ export default {
 
     if (url.pathname.startsWith("/api/")) {
       try {
+        if (url.pathname === "/api/health" && request.method === "GET") return getHealth(env);
         if (url.pathname === "/api/sold" && request.method === "GET") return await getSold(env);
         if (url.pathname === "/api/checkout" && request.method === "POST") return await postCheckout(request, env, url);
         if (url.pathname === "/api/stripe-webhook" && request.method === "POST") return await postWebhook(request, env);
