@@ -1,0 +1,17 @@
+# Files in the repo that must NOT be published as public static assets.
+# The asset directory is the repository root, so anything not listed here
+# is downloadable from the live site.
+
+# Server-side code
+worker/
+
+# Build and tooling config
+wrangler.jsonc
+wrangler.toml
+.assetsignore
+.gitattributes
+.claude/
+
+# Local-only helpers
+serve.ps1
+README.md

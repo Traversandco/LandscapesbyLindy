@@ -1,15 +1,16 @@
-/* Cloudflare Pages Advanced Mode worker.
+/* Server-side routes for landscapesbylindy.co.uk.
  *
- * This project's deployment does not compile a functions/ directory, so all
- * server-side routes live here instead. Pages runs this file for every
- * request; anything that is not /api/* is handed straight back to the
- * static site via env.ASSETS.
+ * The site is a Cloudflare Worker with static assets (see wrangler.jsonc),
+ * not Pages Functions — there is no functions/ directory pipeline here.
+ * Requests matching a static asset are served directly by the assets layer;
+ * everything else reaches this worker, which answers /api/* and hands any
+ * other path back to the static site via env.ASSETS.
  *
- * Requires STRIPE_SECRET_KEY (and STRIPE_WEBHOOK_SECRET for the webhook)
- * as Pages environment variables. Without them the site still works and
+ * Requires STRIPE_SECRET_KEY (and STRIPE_WEBHOOK_SECRET for the webhook) as
+ * Worker environment variables. Without them the site still works and
  * checkout fails with a clear message rather than breaking.
  *
- * Self-contained on purpose: no imports, because nothing bundles this file.
+ * .assetsignore keeps this file out of the public asset upload.
  */
 
 const PRICES = {
@@ -233,8 +234,15 @@ export default {
       }
     }
 
-    // Never expose the server source as a downloadable file.
-    if (url.pathname === "/_worker.js" || url.pathname.startsWith("/functions/")) {
+    // Belt and braces: .assetsignore already keeps these out of the upload,
+    // but never serve server-side source even if one slips in.
+    if (
+      url.pathname === "/_worker.js" ||
+      url.pathname.startsWith("/worker/") ||
+      url.pathname.startsWith("/functions/") ||
+      url.pathname === "/wrangler.jsonc" ||
+      url.pathname === "/.assetsignore"
+    ) {
       return new Response("Not found", { status: 404 });
     }
 

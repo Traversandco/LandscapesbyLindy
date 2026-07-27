@@ -1,0 +1,26 @@
+{
+  // Landscapes by Lindy — Cloudflare Worker with static assets.
+  //
+  // The site is deployed by `npx wrangler deploy`. The whole repository is
+  // the asset directory, so the worker source lives in worker/ and is kept
+  // out of the upload by .assetsignore — otherwise Wrangler (rightly)
+  // refuses to publish server-side code as a public file.
+  //
+  // Routing with this setup: a request matching a static asset is served
+  // directly; anything else (i.e. /api/*) is passed to the worker.
+  //
+  // "name" must stay exactly as-is: it is the existing Worker, and changing
+  // it would deploy a new one and leave the live site untouched.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "landscapsbylindy",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-07-27",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS"
+  }
+}
