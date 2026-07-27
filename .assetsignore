@@ -5,6 +5,12 @@
 # Server-side code
 worker/
 
+# Full-resolution source photographs of the paintings. These are the
+# originals the published .jpeg files are made from; nothing on the site
+# links to them, and publishing them would hand out high-res copies of
+# work the terms page explicitly forbids reproducing.
+artwork/
+
 # Build and tooling config
 wrangler.jsonc
 wrangler.toml

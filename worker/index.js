@@ -44,6 +44,18 @@ const PRICES = {
   "winelands-cottage":      { price: "price_1TxiiPBrZ8ulnngRCumwvWbg", product: "prod_Uxe0uaZFfZqaOg", name: "Winelands Cottage" },
   "table-mountain-sunset":  { price: "price_1TxiieBrZ8ulnngRe2dkFx7x", product: "prod_Uxe0E019TzPlcK", name: "Table Mountain at Sunset" },
   "geraniums-on-the-steps": { price: "price_1TxiipBrZ8ulnngRVs3kxlIA", product: "prod_Uxe05MMeJKMCKl", name: "Geraniums on the Steps" },
+  // added 2026-07-27
+  "lighthouse-on-the-rock":   { price: "price_1TxsFVBrZ8ulnngRqjFF04e3", product: "prod_UxnrNysOXReS1p", name: "Lighthouse on the Rock" },
+  "lighthouse":               { price: "price_1TxsFjBrZ8ulnngRogeEl9cV", product: "prod_UxnroMWsOBdpmh", name: "Lighthouse" },
+  "bushveld-acacias":         { price: "price_1TxsECBrZ8ulnngRCjPaONfH", product: "prod_Uxnp6n3sOXuJt2", name: "Bushveld Acacias" },
+  "sandy-beach":              { price: "price_1TxsDkBrZ8ulnngRzyvHxOW8", product: "prod_UxnpgXIC93Zp8P", name: "Sandy Beach" },
+  "country-dawn":             { price: "price_1TxsEzBrZ8ulnngRvKVXOJ2B", product: "prod_UxnqOa7fB94U5L", name: "Country Dawn" },
+  "choppy-seas":              { price: "price_1TxsEfBrZ8ulnngRTpB6sZpp", product: "prod_UxnqX5FItMYwyM", name: "Choppy Seas" },
+  "west-coast-bay":           { price: "price_1TxsFGBrZ8ulnngRwY53tdPK", product: "prod_Uxnq6aefJ53QbR", name: "West Coast Bay" },
+  "cape-cottage-on-the-beach":{ price: "price_1TxsDDBrZ8ulnngRMLwlaI3X", product: "prod_UxnoLDEHRpKvAn", name: "Cape Cottage on the Beach" },
+  "forest-stream":            { price: "price_1TxsDyBrZ8ulnngR0WuMUEGU", product: "prod_UxnpZlUAD9zJtU", name: "Forest Stream" },
+  "forest-stream-2":          { price: "price_1TxsERBrZ8ulnngRqZlfG91S", product: "prod_Uxnq99jInHEdS8", name: "Forest Stream 2" },
+  "through-the-garden-gate":  { price: "price_1TxsDSBrZ8ulnngRHt4eNH8x", product: "prod_UxnpmyvgY7e9HN", name: "Through the Garden Gate" },
 };
 
 const SHIPPING_COUNTRIES = [
