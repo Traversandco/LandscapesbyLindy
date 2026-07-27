@@ -9,10 +9,12 @@
   // Routing with this setup: a request matching a static asset is served
   // directly; anything else (i.e. /api/*) is passed to the worker.
   //
-  // "name" must stay exactly as-is: it is the existing Worker, and changing
-  // it would deploy a new one and leave the live site untouched.
+  // "name" selects which Worker this deploys to. It was renamed from the
+  // original misspelled "landscapsbylindy" to match the repository. The
+  // custom domain must be attached to whichever Worker this names, or the
+  // live site will keep being served by the old one.
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "landscapsbylindy",
+  "name": "landscapesbylindy",
   "main": "worker/index.js",
   "compatibility_date": "2026-07-27",
   "compatibility_flags": ["nodejs_compat"],

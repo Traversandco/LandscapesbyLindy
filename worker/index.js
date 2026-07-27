@@ -203,10 +203,17 @@ async function postWebhook(request, env) {
 
   let event;
   try { event = JSON.parse(raw); } catch { return new Response("bad payload", { status: 400 }); }
-  if (event.type !== "checkout.session.completed") return new Response("ignored", { status: 200 });
+
+  // async_payment_succeeded matters for delayed methods (bank debits and the
+  // like): those fire completed while still unpaid, and only settle later.
+  // Without it, such a sale would never mark the painting as sold.
+  const HANDLED = ["checkout.session.completed", "checkout.session.async_payment_succeeded"];
+  if (!HANDLED.includes(event.type)) return new Response("ignored", { status: 200 });
 
   const session = event.data.object;
-  if (session.payment_status !== "paid") return new Response("unpaid", { status: 200 });
+  if (session.payment_status !== "paid" && session.payment_status !== "no_payment_required") {
+    return new Response("not yet paid", { status: 200 });
+  }
 
   const slugs = ((session.metadata && session.metadata.slugs) || "").split(",").filter(Boolean);
   await Promise.all(slugs.map(async (slug) => {
