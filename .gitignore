@@ -11,3 +11,10 @@ WhatsApp Image*.jpeg
 signature.png
 serve.ps1
 Oil_Paintings_Catalogue.pdf
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
