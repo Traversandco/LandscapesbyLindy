@@ -477,6 +477,9 @@ section {
     gap: 3.5rem;
     max-width: 940px;
     margin: 0 auto;
+    /* Cards take their own height from the painting rather than stretching
+       to match the tallest in the row. */
+    align-items: start;
 }
 
 .featured-cta {
@@ -640,16 +643,15 @@ section {
 .gallery-item .art-frame {
     overflow: hidden;
     border: 1px solid var(--line);
-    /* Paintings vary from 2:1 landscape to tall portrait. The frame keeps a
-       fixed height so the grid stays even, and the image is contained rather
-       than cropped — the surrounding white reads as mount board. */
     background-color: var(--white);
 }
 
+/* Paintings run from 2:1 panoramas to tall portraits. The frame takes the
+   image's own proportions so the border sits tight against the painting and
+   nothing is cropped — card heights vary as a result, which is intended. */
 .gallery-item img {
     width: 100%;
-    height: 400px;
-    object-fit: contain;
+    height: auto;
     display: block;
     transition: transform 1.1s var(--ease);
 }
