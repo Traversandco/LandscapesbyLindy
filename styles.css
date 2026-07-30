@@ -1193,7 +1193,9 @@ section {
 
     .hero-actions .btn { width: 100%; }
 
-    .gallery-item img { height: 310px; }
+    /* No fixed height here: the image now has no object-fit, so forcing a
+       height would stretch the painting rather than crop it. Natural
+       proportions apply on mobile as well. */
 
     .meta-item { flex-direction: row; }
 }
