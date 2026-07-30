@@ -640,12 +640,16 @@ section {
 .gallery-item .art-frame {
     overflow: hidden;
     border: 1px solid var(--line);
+    /* Paintings vary from 2:1 landscape to tall portrait. The frame keeps a
+       fixed height so the grid stays even, and the image is contained rather
+       than cropped — the surrounding white reads as mount board. */
+    background-color: var(--white);
 }
 
 .gallery-item img {
     width: 100%;
     height: 400px;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
     transition: transform 1.1s var(--ease);
 }
