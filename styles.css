@@ -471,15 +471,16 @@ section {
     background-color: var(--ivory);
 }
 
+/* Paintings vary a lot in height, and a grid sizes each row to its tallest
+   card — which left a ragged gap beneath every shorter one. Columns flow each
+   card directly under the one above it instead, so the space below every card
+   is the same. "320px 2" mirrors the old auto-fit: at most two columns, and
+   one once a column would fall below 320px. */
 .gallery-grid, .full-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 3.5rem;
+    columns: 320px 2;
+    column-gap: 3.5rem;
     max-width: 940px;
     margin: 0 auto;
-    /* Cards take their own height from the painting rather than stretching
-       to match the tallest in the row. */
-    align-items: start;
 }
 
 .featured-cta {
@@ -633,6 +634,11 @@ section {
     padding: 24px 24px 0;
     border: 1px solid var(--line);
     transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease);
+    /* Keep a card whole rather than splitting it across the column break,
+       and carry the vertical rhythm that column-gap only applies sideways. */
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    margin-bottom: 3.5rem;
 }
 
 .gallery-item:hover {
