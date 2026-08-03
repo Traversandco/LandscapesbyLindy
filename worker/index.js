@@ -58,6 +58,17 @@ const PRICES = {
   "through-the-garden-gate":  { price: "price_1TxsDSBrZ8ulnngRHt4eNH8x", product: "prod_UxnpmyvgY7e9HN", name: "Through the Garden Gate" },
 };
 
+/* Works that are sold but whose Stripe product has not been archived.
+ *
+ * Normally a sale archives the product (the webhook does it), and that
+ * archive is what marks a painting sold. A painting sold away from the
+ * website has no Stripe payment behind it, so nothing archives it — it is
+ * listed here instead. Both routes are honoured everywhere sold is checked,
+ * so this list is the guard that actually stops the work being bought.
+ * Keep it in step with the SOLD_OUT list in cart.js.
+ */
+const SOLD_OUT = new Set(["blossom-walk", "emerald-surf"]);
+
 const SHIPPING_COUNTRIES = [
   "GB","IE","US","CA","AU","NZ","ZA",
   "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IT",
@@ -89,22 +100,25 @@ async function stripe(env, path, method = "GET", body) {
 
 /* ---------- GET /api/sold ---------- */
 async function getSold(env) {
-  if (!env.STRIPE_SECRET_KEY) return json({ sold: [] }, 200, { "Cache-Control": "public, max-age=60" });
+  const listed = Object.keys(PRICES).filter((s) => SOLD_OUT.has(s));
+  if (!env.STRIPE_SECRET_KEY) return json({ sold: listed }, 200, { "Cache-Control": "public, max-age=60" });
   try {
     const data = await stripe(env, "/products?limit=100&active=false");
     const archived = new Set((data.data || []).map((p) => p.metadata && p.metadata.slug).filter(Boolean));
-    const sold = Object.keys(PRICES).filter((s) => archived.has(s));
+    const sold = Object.keys(PRICES).filter((s) => archived.has(s) || SOLD_OUT.has(s));
     return json({ sold }, 200, { "Cache-Control": "public, max-age=60" });
   } catch {
-    // never block browsing on a Stripe problem
-    return json({ sold: [] }, 200, { "Cache-Control": "public, max-age=60" });
+    // never block browsing on a Stripe problem — but a work known to be sold
+    // stays sold even when Stripe cannot be reached
+    return json({ sold: listed }, 200, { "Cache-Control": "public, max-age=60" });
   }
 }
 
 /* ---------- POST /api/checkout ---------- */
 async function soldSlugs(env, slugs) {
-  const sold = [];
-  await Promise.all(slugs.map(async (slug) => {
+  // Listed as sold: no Stripe lookup can clear it, so decide here and skip it.
+  const sold = slugs.filter((s) => SOLD_OUT.has(s));
+  await Promise.all(slugs.filter((s) => !SOLD_OUT.has(s)).map(async (slug) => {
     try {
       const p = await stripe(env, `/products/${PRICES[slug].product}`);
       if (p.active === false) { sold.push(slug); return; }

@@ -7,6 +7,13 @@
 
   var KEY = "lbl-basket";
 
+  /* Works sold away from the website, so no Stripe payment archived them.
+     Their pages and gallery cards are already marked sold in the HTML; this
+     list is what clears them from a basket saved before they sold, and what
+     greys the button if one is ever missed. Keep in step with SOLD_OUT in
+     worker/index.js, which is what actually refuses the sale. */
+  var SOLD_OUT = ["blossom-walk", "emerald-surf"];
+
   function read() {
     try {
       var v = JSON.parse(localStorage.getItem(KEY) || "[]");
@@ -52,6 +59,8 @@
 
   /* ---- add / remove buttons on artwork and gallery pages ---- */
   function label(btn, inBasket) {
+    // A sold work's button is greyed out and reads Sold — never relabel it.
+    if (btn.classList.contains("is-sold")) return;
     btn.textContent = inBasket ? "In Basket — Remove" : (btn.dataset.addLabel || "Add to Basket");
     btn.classList.toggle("in-basket", inBasket);
   }
@@ -72,32 +81,37 @@
     });
   }
 
-  /* ---- mark sold works, if the API is reachable ---- */
+  /* ---- grey out sold works and drop them from the basket ---- */
+  function applySold(sold) {
+    if (!sold || !sold.length) return;
+
+    // Mark the buttons before touching the basket: writing fires
+    // basket:change, and the is-sold class is what stops the relabel.
+    sold.forEach(function (slug) {
+      document.querySelectorAll('[data-add-to-basket="' + slug + '"]').forEach(function (btn) {
+        btn.classList.add("is-sold");
+        btn.disabled = true;
+        btn.textContent = "Sold";
+      });
+    });
+
+    // a sold work cannot stay in someone's basket
+    var kept = read().filter(function (s) { return sold.indexOf(s) === -1; });
+    if (kept.length !== read().length) write(kept);
+  }
+
+  /* ---- and again from the API, which knows about works sold since ---- */
   function markSold() {
-    if (!document.querySelector("[data-add-to-basket]")) return;
     fetch("/api/sold")
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        if (!d || !d.sold || !d.sold.length) return;
-        var sold = d.sold;
-        // a sold work cannot stay in someone's basket
-        var kept = read().filter(function (s) { return sold.indexOf(s) === -1; });
-        if (kept.length !== read().length) write(kept);
-
-        sold.forEach(function (slug) {
-          document.querySelectorAll('[data-add-to-basket="' + slug + '"]').forEach(function (btn) {
-            btn.disabled = true;
-            btn.textContent = "Sold";
-            btn.classList.add("is-sold");
-          });
-        });
-      })
+      .then(function (d) { if (d) applySold(d.sold); })
       .catch(function () { /* offline or not configured — leave as is */ });
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     paint();
     wire();
+    applySold(SOLD_OUT);
     markSold();
   });
 })();

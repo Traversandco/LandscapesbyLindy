@@ -710,6 +710,32 @@ section {
     margin-bottom: 1.5rem;
 }
 
+/* ---------- Sold works ---------- */
+/* A sold painting stays in the gallery. Its price is struck through rather
+   than removed, so what the work went for is still on show, and a Sold mark
+   sits beside it. The Add to Basket button is greyed out and unclickable —
+   .btn[disabled] handles that. */
+
+.price .was,
+.artwork-price .was {
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--taupe-text);
+    color: var(--taupe-text);
+}
+
+.sold-mark {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+    white-space: nowrap;
+    margin-left: 0.6em;
+    vertical-align: middle;
+}
+
 /* ---------- Quote band ---------- */
 
 .quote-band {

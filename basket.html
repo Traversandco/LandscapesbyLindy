@@ -201,6 +201,11 @@
             });
         });
 
+        // cart.js drops sold works from the basket once the page loads, which
+        // happens after this first render. Without this the list would keep
+        // showing them, and the total would include works no longer for sale.
+        document.addEventListener("basket:change", render);
+
         render();
     })();
     </script>
