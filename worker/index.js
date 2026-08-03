@@ -302,6 +302,7 @@ export default {
       url.pathname.startsWith("/worker/") ||
       url.pathname.startsWith("/functions/") ||
       url.pathname.startsWith("/.git") ||
+      url.pathname.startsWith("/.wrangler") ||
       url.pathname.startsWith("/artwork/") ||
       url.pathname === "/wrangler.jsonc" ||
       url.pathname === "/.assetsignore"

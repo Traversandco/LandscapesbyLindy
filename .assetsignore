@@ -12,6 +12,12 @@
 # Server-side code
 worker/
 
+# Wrangler's own build output. It bundles worker/index.js into
+# .wrangler/tmp/deploy-*/index.js at deploy time, inside the asset directory,
+# so without this the deploy publishes the built worker — router and all — as a
+# downloadable file. Confirmed live: it returned 200 before this was added.
+.wrangler/
+
 # Full-resolution source photographs of the paintings. These are the
 # originals the published .jpeg files are made from; nothing on the site
 # links to them, and publishing them would hand out high-res copies of

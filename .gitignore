@@ -1,6 +1,9 @@
 # graphify knowledge-graph output (generated artifact, not part of the site)
 graphify-out/
 
+# wrangler's build output, written into the asset directory at deploy time
+.wrangler/
+
 # local-only files — not part of the deployed site
 landscapesbylindy-deploy.zip
 STRIPE_SETUP.md
