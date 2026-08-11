@@ -96,8 +96,11 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', remeasure, { passive: true });
     window.addEventListener('orientationchange', remeasure, { passive: true });
-    // The signature is a large PNG; its box is only final once it has loaded.
-    if (!mark.complete) mark.addEventListener('load', function () { measure(); apply(); });
+    /* The signature is an inline SVG with its own width and height, so its
+       box is known immediately; the PNG it masks arrives later and does not
+       change the box. Re-measure on window load anyway, in case webfonts or
+       late layout have moved the navbar logo the scrub is aiming at. */
+    window.addEventListener('load', function () { remeasure(); });
 })();
 
 // Navbar shadow on scroll

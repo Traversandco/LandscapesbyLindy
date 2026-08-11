@@ -447,6 +447,45 @@ textarea:focus-visible {
     50% { transform: translate(-50%, 8px); }
 }
 
+/* ---------- Signature draws itself ---------- */
+/* The mask is a stroke following the pen's route through the signature;
+   animating its dash offset reveals the artwork as though it is being
+   written. Fully drawn is the resting state, so if the animation never
+   runs — no CSS animation support, reduced motion — the signature is
+   simply there rather than invisible. */
+
+.pen-route {
+    stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .pen-route {
+        animation: penDraw 2.4s cubic-bezier(0.65, 0, 0.35, 1) 0.35s backwards;
+    }
+}
+
+@keyframes penDraw {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+}
+
+/* The pen is the entrance, so the signature must not also fade or slide in.
+   Kept as its own rule: a selector list is thrown away whole if any part of
+   it is unsupported, and this must not depend on :has() being understood. */
+svg.hero-signature.seq {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+}
+
+html.js-scrub .hero-signature.seq {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+}
+
 /* ---------- Scroll-scrubbed hero ---------- */
 /* The signature fills the page, then travels to the navbar as you scroll.
    It is driven by scroll position, not by a timer, so it runs backwards
@@ -457,6 +496,10 @@ textarea:focus-visible {
 html.js-scrub .hero-stage {
     height: 240vh;
     position: relative;
+    /* The gradient lives here, not on the hero. The hero has to paint above
+       the navbar so the signature crosses over it rather than sliding
+       under, and a background on the hero would cover the navbar. */
+    background: linear-gradient(180deg, var(--ivory) 0, var(--cream) 100vh);
 }
 
 html.js-scrub .hero-stage .hero {
@@ -465,6 +508,20 @@ html.js-scrub .hero-stage .hero {
     height: 100vh;
     height: 100dvh;
     min-height: 0;
+    /* Sticky always makes a stacking context, so this is what decides
+       whether the travelling signature is over the header or under it.
+       Above the navbar's 1000. */
+    z-index: 1100;
+    background: none;
+    /* Sitting above the navbar means this box would otherwise swallow every
+       click on the header for the whole length of the stage. Let clicks
+       through, and give them back only to the hero's own controls. */
+    pointer-events: none;
+}
+
+html.js-scrub .hero-stage .hero a,
+html.js-scrub .hero-stage .hero button {
+    pointer-events: auto;
 }
 
 /* The scrub owns this transform, so the entrance may only fade it in —
