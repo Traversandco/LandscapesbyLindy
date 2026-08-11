@@ -4,8 +4,8 @@
     {
       "name": "landscapes-preview",
       "runtimeExecutable": "powershell",
-      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "serve.ps1"],
-      "autoPort": true
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "serve.ps1", "-Port", "8890"],
+      "port": 8890
     }
   ]
 }

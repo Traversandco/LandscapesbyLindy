@@ -55,6 +55,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Jost:wght@300;400;500&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script>
+    /* Opt into the scroll-scrubbed hero before first paint, so the tall
+       stage and the sticky hero are in place from the first frame rather
+       than shifting the page once main.js runs. The class is the only
+       switch: without scripting, or with reduced motion, the stage has no
+       extra height and the hero is an ordinary hero. Nothing here locks
+       anything — the page scrolls normally throughout. */
+    (function () {
+        try {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (window.innerWidth < 880) return;
+        } catch (e) { return; }
+        document.documentElement.classList.add('js-scrub');
+        /* The class hides the navbar logo and makes the stage 240vh, both of
+           which only make sense once main.js is driving the scrub. If it
+           never arrives, take the class back rather than leave a tall empty
+           stage and a missing logo. */
+        setTimeout(function () {
+            if (!window.__lblScrubReady) {
+                document.documentElement.classList.remove('js-scrub');
+            }
+        }, 4000);
+    })();
+    </script>
 </head>
 <body>
     <!-- Navigation -->
@@ -80,8 +104,11 @@
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="hero hero--light" id="home">
+    <!-- Hero. The stage is the scroll runway: with .js-scrub it is taller
+         than the viewport and the hero pins inside it, so scrolling through
+         it scrubs the signature from full page to the navbar. -->
+    <div class="hero-stage" data-hero-stage>
+    <section class="hero hero--light" id="home" data-splash-home>
         <div class="hero-content">
             <h1 class="sr-only">Original oil and watercolour paintings by artist Lindy Ham</h1>
             <span class="eyebrow seq seq-1">Original Watercolours &amp; Oils</span>
@@ -95,6 +122,7 @@
         </div>
         <a href="#featured" class="hero-scroll">Scroll</a>
     </section>
+    </div>
 
     <!-- Featured Works -->
     <section class="featured" id="featured">

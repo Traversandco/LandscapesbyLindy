@@ -447,6 +447,59 @@ textarea:focus-visible {
     50% { transform: translate(-50%, 8px); }
 }
 
+/* ---------- Scroll-scrubbed hero ---------- */
+/* The signature fills the page, then travels to the navbar as you scroll.
+   It is driven by scroll position, not by a timer, so it runs backwards
+   when you scroll back up. Everything here is gated behind .js-scrub, set
+   before first paint — without scripting, or with reduced motion, or on a
+   narrow screen, the stage has no extra height and the hero is unchanged. */
+
+html.js-scrub .hero-stage {
+    height: 240vh;
+    position: relative;
+}
+
+html.js-scrub .hero-stage .hero {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+}
+
+/* The scrub owns this transform, so the entrance may only fade it in —
+   a transform-animating entrance would fight the scroll position. */
+html.js-scrub .hero-signature.seq {
+    transform: none;
+    filter: none;
+    animation: sigFade 1.2s var(--ease) forwards;
+    animation-delay: 0.25s;
+}
+
+@keyframes sigFade {
+    to { opacity: 1; }
+}
+
+html.js-scrub .hero-signature {
+    transform-origin: 50% 50%;
+    will-change: transform;
+    margin-bottom: 2.4rem;
+}
+
+/* The navbar logo is the destination, so it stays invisible until the
+   travelling signature has arrived on top of it — then they swap. */
+html.js-scrub .navbar .logo img {
+    opacity: 0;
+}
+
+html.js-scrub.scrub-landed .navbar .logo img {
+    opacity: 1;
+}
+
+html.js-scrub.scrub-landed .hero-signature {
+    opacity: 0;
+}
+
 /* ---------- Reveal on scroll ---------- */
 
 .reveal {
@@ -1236,6 +1289,13 @@ section {
 
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
+
+    /* The head script never sets .js-scrub here; this is the belt to that
+       braces, so a stale class cannot leave a tall empty stage behind. */
+    html.js-scrub .hero-stage { height: auto; }
+    html.js-scrub .hero-stage .hero { position: relative; height: auto; }
+    html.js-scrub .hero-signature { transform: none; opacity: 1; }
+    html.js-scrub .navbar .logo img { opacity: 1; }
 
     .hero .seq,
     .hero-signature.seq {
