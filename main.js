@@ -32,6 +32,23 @@
         '.eyebrow, .hero-wordmark, .hero-content p, .hero-actions, .hero-scroll'
     );
 
+    /* The entrance animations fill forwards, and a filled animation beats an
+       inline style — so setting opacity below did nothing at all until the
+       animation is cleared, and the copy stayed solid while the hero carried
+       it up across the header. Take the animation off each element once its
+       entrance has finished, with a timer in case animationend never comes
+       (it does not for the scroll cue, whose bob loops forever). */
+    function releaseEntrance() {
+        for (let i = 0; i < fading.length; i++) {
+            fading[i].style.animation = 'none';
+        }
+        apply();
+    }
+    for (let i = 0; i < fading.length; i++) {
+        fading[i].addEventListener('animationend', releaseEntrance, { once: true });
+    }
+    window.setTimeout(releaseEntrance, 3000);
+
     let from = null;
     let to = null;
     let landed = false;
