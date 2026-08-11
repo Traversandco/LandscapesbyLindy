@@ -544,13 +544,22 @@ html.js-scrub .hero-signature {
 }
 
 /* The navbar logo is the destination, so it stays invisible until the
-   travelling signature has arrived on top of it — then they swap. */
-html.js-scrub .navbar .logo img {
+   travelling signature has arrived on top of it — then they swap.
+   The wordmark beside it waits too: the signature's flight passes straight
+   through that text, and two marks crossing read as a collision. The
+   header carries no lockup while the big signature is the lockup. */
+html.js-scrub .navbar .logo img,
+html.js-scrub .navbar .logo .logo-stack {
     opacity: 0;
 }
 
-html.js-scrub.scrub-landed .navbar .logo img {
+html.js-scrub.scrub-landed .navbar .logo img,
+html.js-scrub.scrub-landed .navbar .logo .logo-stack {
     opacity: 1;
+}
+
+html.js-scrub .navbar .logo .logo-stack {
+    transition: opacity 0.5s var(--ease);
 }
 
 html.js-scrub.scrub-landed .hero-signature {

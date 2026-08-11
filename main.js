@@ -53,8 +53,16 @@
 
         const runway = stage.offsetHeight - window.innerHeight;
         const travelled = window.scrollY - stage.offsetTop;
-        let p = runway > 0 ? travelled / runway : 1;
-        p = p < 0 ? 0 : (p > 1 ? 1 : p);
+        let raw = runway > 0 ? travelled / runway : 1;
+        raw = raw < 0 ? 0 : (raw > 1 ? 1 : raw);
+
+        /* Land before the pin ends. Using the whole runway meant the
+           signature was still moving as the hero released, so it read as
+           overshooting into the page rather than arriving. The last fifth
+           is a settled beat with the signature already home. */
+        const LANDS_AT = 0.8;
+        let p = raw / LANDS_AT;
+        if (p > 1) p = 1;
 
         const scale = 1 + (to.w / from.w - 1) * p;
         const dx = (to.cx - from.cx) * p;
