@@ -43,7 +43,20 @@
         const f = mark.getBoundingClientRect();
         const t = navLogo.getBoundingClientRect();
         if (!f.width || !t.width) { from = to = null; return; }
-        from = { cx: f.left + f.width / 2, cy: f.top + f.height / 2, w: f.width };
+
+        /* Measuring happens at the top of the page, where the hero still
+           sits at its natural offset below the navbar. Every frame of the
+           travel happens with the hero pinned to the viewport top, so its
+           real starting point is higher than what was just measured by
+           exactly that offset. Without this the signature lands a navbar's
+           height above the logo instead of on it. */
+        const heroTop = hero.getBoundingClientRect().top;
+
+        from = {
+            cx: f.left + f.width / 2,
+            cy: f.top + f.height / 2 - heroTop,
+            w: f.width
+        };
         to = { cx: t.left + t.width / 2, cy: t.top + t.height / 2, w: t.width };
     }
 
