@@ -508,28 +508,25 @@ html.js-scrub .hero-stage .hero {
     height: 100vh;
     height: 100dvh;
     min-height: 0;
-    /* Sticky always makes a stacking context, so this is what decides
-       whether the travelling signature is over the header or under it.
-       Above the navbar's 1000. */
-    z-index: 1100;
     background: none;
-    /* Sitting above the navbar means this box would otherwise swallow every
-       click on the header for the whole length of the stage. Let clicks
-       through, and give them back only to the hero's own controls. */
-    pointer-events: none;
-    /* Raising the hero lifts all of it, not just the signature, and pinning
-       moves its content up by the navbar's height. Between them the eyebrow
-       ended up printed across the nav links. Hold the copy below the header
-       band so the travelling signature is the only thing that crosses it. */
-    box-sizing: border-box;
-    padding-top: 75px;
 }
 
-/* Reserving that band leaves less room, so the signature takes a little
-   less of it — otherwise the copy is pushed off the bottom of the hero. */
-html.js-scrub .hero-signature {
-    height: clamp(150px, 30vh, 360px);
-    margin-bottom: 1.8rem;
+/* The travelling signature, and only it, sits above the header. The hero
+   keeps its ordinary place below the navbar, so its heading and buttons
+   pass behind the header as the page scrolls, the way any page does. */
+.hero-mark-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    pointer-events: none;
+}
+
+.hero-mark-layer .hero-signature.is-flying {
+    position: absolute;
+    margin: 0;
+    max-width: none;
+    transform-origin: 50% 50%;
+    will-change: transform;
 }
 
 html.js-scrub .hero-stage .hero a,

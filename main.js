@@ -4,14 +4,19 @@
  *
  * The signature fills the page, then travels into the navbar's logo slot in
  * the top-left corner as you scroll through the stage. It is tied to scroll
- * position rather than to a timer, so it tracks the scrollbar exactly and
- * runs backwards when you scroll up. Nothing is locked at any point.
+ * position rather than a timer, so it tracks the scrollbar exactly and runs
+ * backwards on the way up. Nothing is locked at any point.
  *
- * The geometry is FLIP: measure where the signature sits naturally, measure
- * where the navbar logo rests, and interpolate between the two by progress.
- * Both are the same artwork at the same 1247:398 aspect, so at progress 1
- * the travelling signature lies exactly over the navbar logo and the two
- * are swapped without a visible seam.
+ * The travelling signature is a copy of the hero's, living in a fixed layer
+ * above the navbar. That separation is the whole point: the signature has
+ * to pass in FRONT of the header while the hero's own copy passes BEHIND
+ * it, and one element cannot do both. Raising the hero raised its text too.
+ * The original stays in the hero, hidden but still occupying its space, so
+ * the layout is untouched and the copy flows exactly as it always did.
+ *
+ * Positions are measured live each frame from that hidden original, so the
+ * travel is correct whether the hero is pinned or not — no offset to
+ * correct for, and no stale measurement after a resize.
  *
  * .js-scrub is set in the head before first paint; this only reads it.
  */
@@ -27,82 +32,62 @@
     const navLogo = document.querySelector('.navbar .logo img');
     if (!mark || !navLogo) { root.classList.remove('js-scrub'); return; }
 
-    // Everything except the signature fades out as the signature departs.
-    const fading = hero.querySelectorAll(
-        '.eyebrow, .hero-wordmark, .hero-content p, .hero-actions, .hero-scroll'
-    );
+    /* The flying copy. Ids inside are rewritten, or its mask would resolve
+       to the original's and the two would share one animation. */
+    const layer = document.createElement('div');
+    layer.className = 'hero-mark-layer';
+    layer.setAttribute('aria-hidden', 'true');
 
-    /* The entrance animations fill forwards, and a filled animation beats an
-       inline style — so setting opacity below did nothing at all until the
-       animation is cleared, and the copy stayed solid while the hero carried
-       it up across the header. Take the animation off each element once its
-       entrance has finished, with a timer in case animationend never comes
-       (it does not for the scroll cue, whose bob loops forever). */
-    function releaseEntrance() {
-        for (let i = 0; i < fading.length; i++) {
-            fading[i].style.animation = 'none';
-        }
-        apply();
+    const fly = mark.cloneNode(true);
+    fly.classList.add('is-flying');
+    fly.removeAttribute('role');
+    fly.removeAttribute('aria-label');
+    const oldMask = fly.querySelector('mask');
+    if (oldMask) {
+        oldMask.id = 'pen-mask-fly';
+        const masked = fly.querySelector('[mask]');
+        if (masked) masked.setAttribute('mask', 'url(#pen-mask-fly)');
     }
-    for (let i = 0; i < fading.length; i++) {
-        fading[i].addEventListener('animationend', releaseEntrance, { once: true });
-    }
-    window.setTimeout(releaseEntrance, 3000);
+    layer.appendChild(fly);
+    document.body.appendChild(layer);
 
-    let from = null;
-    let to = null;
+    // The original holds its space but is never seen; the copy is the one
+    // that draws and travels.
+    mark.style.visibility = 'hidden';
+
     let landed = false;
     let ticking = false;
 
-    function measure() {
-        // Measure the signature untransformed, or the deltas compound.
-        mark.style.transform = '';
-        const f = mark.getBoundingClientRect();
-        const t = navLogo.getBoundingClientRect();
-        if (!f.width || !t.width) { from = to = null; return; }
-
-        /* Measuring happens at the top of the page, where the hero still
-           sits at its natural offset below the navbar. Every frame of the
-           travel happens with the hero pinned to the viewport top, so its
-           real starting point is higher than what was just measured by
-           exactly that offset. Without this the signature lands a navbar's
-           height above the logo instead of on it. */
-        const heroTop = hero.getBoundingClientRect().top;
-
-        from = {
-            cx: f.left + f.width / 2,
-            cy: f.top + f.height / 2 - heroTop,
-            w: f.width
-        };
-        to = { cx: t.left + t.width / 2, cy: t.top + t.height / 2, w: t.width };
-    }
-
     function apply() {
         ticking = false;
-        if (!from || !to) return;
+
+        // Measured live, so pinned or not this is where the signature is.
+        const base = mark.getBoundingClientRect();
+        const target = navLogo.getBoundingClientRect();
+        if (!base.width || !target.width) return;
 
         const runway = stage.offsetHeight - window.innerHeight;
         const travelled = window.scrollY - stage.offsetTop;
         let raw = runway > 0 ? travelled / runway : 1;
         raw = raw < 0 ? 0 : (raw > 1 ? 1 : raw);
 
-        /* Land before the pin ends. Using the whole runway meant the
-           signature was still moving as the hero released, so it read as
-           overshooting into the page rather than arriving. The last fifth
-           is a settled beat with the signature already home. */
+        // Land before the pin releases, so the arrival is not still running
+        // as the page moves on.
         const LANDS_AT = 0.8;
         let p = raw / LANDS_AT;
         if (p > 1) p = 1;
 
-        const scale = 1 + (to.w / from.w - 1) * p;
-        const dx = (to.cx - from.cx) * p;
-        const dy = (to.cy - from.cy) * p;
-        mark.style.transform =
-            'translate(' + dx + 'px, ' + dy + 'px) scale(' + scale + ')';
+        // Park the copy over the original, then travel from there.
+        fly.style.left = base.left + 'px';
+        fly.style.top = base.top + 'px';
+        fly.style.width = base.width + 'px';
+        fly.style.height = base.height + 'px';
 
-        // The hero copy clears well before the signature arrives.
-        const fade = 1 - Math.min(1, p * 1.7);
-        for (let i = 0; i < fading.length; i++) fading[i].style.opacity = fade;
+        const scale = 1 + (target.width / base.width - 1) * p;
+        const dx = (target.left + target.width / 2) - (base.left + base.width / 2);
+        const dy = (target.top + target.height / 2) - (base.top + base.height / 2);
+        fly.style.transform =
+            'translate(' + (dx * p) + 'px, ' + (dy * p) + 'px) scale(' + scale + ')';
 
         // Hand over to the real navbar logo only once they coincide.
         const nowLanded = p > 0.995;
@@ -118,27 +103,13 @@
         window.requestAnimationFrame(apply);
     }
 
-    function remeasure() {
-        // Measuring is only valid with the stage pinned at its start.
-        const y = window.scrollY;
-        if (y > 4) { onScroll(); return; }
-        measure();
-        onScroll();
-    }
-
-    measure();
     apply();
-    // Tells the head script's failsafe that the scrub is running after all.
     window.__lblScrubReady = true;
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', remeasure, { passive: true });
-    window.addEventListener('orientationchange', remeasure, { passive: true });
-    /* The signature is an inline SVG with its own width and height, so its
-       box is known immediately; the PNG it masks arrives later and does not
-       change the box. Re-measure on window load anyway, in case webfonts or
-       late layout have moved the navbar logo the scrub is aiming at. */
-    window.addEventListener('load', function () { remeasure(); });
+    window.addEventListener('resize', onScroll, { passive: true });
+    window.addEventListener('orientationchange', onScroll, { passive: true });
+    window.addEventListener('load', onScroll);
 })();
 
 // Navbar shadow on scroll
