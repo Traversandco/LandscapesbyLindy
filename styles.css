@@ -517,6 +517,19 @@ html.js-scrub .hero-stage .hero {
        click on the header for the whole length of the stage. Let clicks
        through, and give them back only to the hero's own controls. */
     pointer-events: none;
+    /* Raising the hero lifts all of it, not just the signature, and pinning
+       moves its content up by the navbar's height. Between them the eyebrow
+       ended up printed across the nav links. Hold the copy below the header
+       band so the travelling signature is the only thing that crosses it. */
+    box-sizing: border-box;
+    padding-top: 75px;
+}
+
+/* Reserving that band leaves less room, so the signature takes a little
+   less of it — otherwise the copy is pushed off the bottom of the hero. */
+html.js-scrub .hero-signature {
+    height: clamp(150px, 30vh, 360px);
+    margin-bottom: 1.8rem;
 }
 
 html.js-scrub .hero-stage .hero a,
